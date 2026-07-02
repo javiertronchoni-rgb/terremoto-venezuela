@@ -1,19 +1,22 @@
 import os
 import pandas as pd
 from datetime import datetime
-from plyer import notification
+try:
+    from plyer import notification
+    HAS_NOTIFICATION = True
+except Exception:
+    HAS_NOTIFICATION = False
 from data_sources import load_historial, save_historial, get_current_snapshot
 
 def send_mac_notification(title, message):
-    try:
-        notification.notify(
-            title=title,
-            message=message,
-            app_name='Venezuela Dashboard',
-            timeout=10,
-        )
-    except Exception:
-        pass
+    if not HAS_NOTIFICATION:
+        return
+    notification.notify(
+        title=title,
+        message=message,
+        app_name='Venezuela Dashboard',
+        timeout=10,
+    )
 
 def check_for_updates():
     snapshot, _ = get_current_snapshot()
