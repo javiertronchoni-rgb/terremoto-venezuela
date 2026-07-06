@@ -75,8 +75,9 @@ def fetch_wikipedia_casualties():
         )
         muertos = heridos = desaparecidos = None
         if m:
-            content = m.group(1)
-            parts = re.findall(r'([\d,]+)\+?\s*([a-z]+)', content, re.IGNORECASE)
+            content = re.sub(r'<[^>]+>', '', m.group(1))
+            content = content.replace('&gt;', '>').replace('&lt;', '<').replace('&amp;', '&')
+            parts = re.findall(r'([\d,]+)\+?\s*([a-zA-ZÀ-ÿ]+)', content, re.IGNORECASE)
             for num_str, label in parts:
                 num = int(num_str.replace(',', ''))
                 low = label.lower()
